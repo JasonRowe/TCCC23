@@ -12,19 +12,21 @@ namespace TCCC23.Publisher
 			var busFactory = new BusFactory();
 			using (var bus = busFactory.GetBus())
 			{
+				var exchange = Configuration.HelloWorldExchangeName;
+				var routingKey = Configuration.HelloWorldRoutingKey;
+
+				// Declare exchange and publish hello world message.
+				var source = bus.Advanced.ExchangeDeclare(exchange, "topic");
+
 				while (true)
 				{
 					try
 					{
-						var exchange = Configuration.HelloWorldExchangeName;
-						var routingKey = Configuration.HelloWorldRoutingKey;
-
-						// Declare exchange and publish hello world message.
-						var source = bus.Advanced.ExchangeDeclare(exchange, "topic");
 						bus.Advanced.Publish(source, routingKey, true, new Message<HelloWorld>(new HelloWorld
 						{
 							Text = "Hello World!"
 						}));
+						Console.WriteLine($"Published message {routingKey} {exchange} {bus.IsConnected}.");
 					}
 					catch (Exception ex)
 					{
