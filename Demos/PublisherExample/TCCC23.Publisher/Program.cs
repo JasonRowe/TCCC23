@@ -24,9 +24,8 @@ namespace TCCC23.Publisher
 					{
 						bus.Advanced.Publish(source, routingKey, true, new Message<HelloWorld>(new HelloWorld
 						{
-							Text = "Hello World!"
+							Text = $"Hello World! {DateTime.UtcNow}"
 						}));
-						Console.WriteLine($"Published message {routingKey} {exchange} {bus.IsConnected}.");
 					}
 					catch (Exception ex)
 					{
